@@ -68,17 +68,16 @@ app.put('/produtos/:id', async (request, response) => {
   }
 });
 
-
 // LOGIN
 
 //get all
-app.get('/login', async (request, response) => {
+app.get('/user', async (request, response) => {
   const res = await UserSchema.find();
   return response.json(res);
 });
 
 //get by id
-app.get('/login/:id', async (request, response) => {
+app.get('/user/:id', async (request, response) => {
   const id = request.params.id;
 
   const res = await UserSchema.findById(id);
@@ -90,14 +89,14 @@ app.get('/login/:id', async (request, response) => {
 });
 
 // post
-app.post('/login', async (request, response) => {
+app.post('/user', async (request, response) => {
   const res = await UserSchema.create(request.body);
 
   return response.status(201).json(res);
 });
 
 //delete
-app.delete('/login/:id', async (request, response) => {
+app.delete('/user/:id', async (request, response) => {
   const id = request.params.id;
   try {
     await UserSchema.findByIdAndRemove(id);
@@ -108,7 +107,7 @@ app.delete('/login/:id', async (request, response) => {
 });
 
 //put
-app.put('/login/:id', async (request, response) => {
+app.put('/user/:id', async (request, response) => {
   const id = request.params.id;
   const body = request.body;
   try {
