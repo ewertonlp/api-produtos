@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 
 const ProdutoSchema = require('./schemas/ProdutoSchema');
+const UserSchema = require('./schemas/UserSchema');
 
 const PORT = process.env.PORT || 3333;
 
@@ -61,6 +62,57 @@ app.put('/produtos/:id', async (request, response) => {
   const body = request.body;
   try {
     const res = await ProdutoSchema.findByIdAndUpdate({ _id: id }, body);
+    return response.json(res);
+  } catch (error) {
+    return response.status(500);
+  }
+});
+
+
+// LOGIN
+
+//get all
+app.get('/login', async (request, response) => {
+  const res = await UserSchema.find();
+  return response.json(res);
+});
+
+//get by id
+app.get('/login/:id', async (request, response) => {
+  const id = request.params.id;
+
+  const res = await UserSchema.findById(id);
+
+  if (!res) {
+    return response.status(404).json({ message: 'user not found' });
+  }
+  return response.json(res);
+});
+
+// post
+app.post('/login', async (request, response) => {
+  const res = await UserSchema.create(request.body);
+
+  return response.status(201).json(res);
+});
+
+//delete
+app.delete('/login/:id', async (request, response) => {
+  const id = request.params.id;
+  try {
+    await UserSchema.findByIdAndRemove(id);
+    return response.status(204).json();
+  } catch (error) {
+    return response.status(500);
+  }
+});
+
+//put
+app.put('/login/:id', async (request, response) => {
+  const id = request.params.id;
+  const body = request.body;
+  try {
+    const res = await UserSchema.findByIdAndUpdate({ _id: id }, body);
     return response.json(res);
   } catch (error) {
     return response.status(500);
